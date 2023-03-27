@@ -1,0 +1,78 @@
+#titletext{
+	color: #34b7ef;
+	text-align: center;
+	font: 1.6em "Fira Sans", sans-serif;
+}
+
+#topButtons{
+	height: 60px;
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+}
+#bubbleButton{
+	font-size:25px;
+}
+#selectionButton{
+	font-size:25px;
+}
+#insertionButton{
+	font-size:25px;
+}
+#mergeButton{
+	font-size:25px;
+}
+#shuffleButton{
+	font-size:20px;
+}
+#startSortButton{
+	font-size:20px;
+}
+#stopSortButton{
+	font-size:20px;
+}
+#soundButton{
+	font-size:20px;
+}
+#confirmSize{
+	margin: -10px;
+	font-size:20px;
+}
+#arraySize{
+	font-size:20px;
+}
+
+
+
+#container{
+    height: 70vh;
+	width: 80%;
+    display: flex;
+	justify-content: space-evenly;
+    align-items: flex-end;
+}
+#setSpeed{
+	-webkit-appearance: none;
+	background-color: #ffffff;
+	border: .1rem solid #333333;
+    border-radius: .5rem;
+}
+
+body{
+	background-color: #b8ffff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.bar{
+    width: 80%;
+    background-color: black;
+    margin: 1px;
+}
+#bottomButtons{
+	width: 85%;
+	display: flex;
+	justify-content: space-evenly;
+	font: 1.3em "Fira Sans", sans-serif;
+}
