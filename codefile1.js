@@ -1,3 +1,4 @@
+
 let n = 16;
 let k = n;
 let maxElement = 0;
@@ -5,8 +6,8 @@ let array = [];
 let isPlaying = 0;
 let playBubble = 1;
 let playSelection = 0;
+let playSelectionMin = 0;
 let playInsertion = 0;
-let playMerge = 0;
 let sortSpeed = 1;
 let setSpeed = 10;
 let pause = 0;
@@ -44,48 +45,48 @@ function selectBubble(){
 	if(!isPlaying){
 		playBubble = 1;
 		playSelection = 0;
+		playSelectionMin = 0;
 		playInsertion = 0;
-		playMerge = 0;
 		bubbleButton.style.backgroundColor = "#9effa6";
 		selectionButton.style.backgroundColor = "#eeeeee";
 		insertionButton.style.backgroundColor = "#eeeeee";
-		mergeButton.style.backgroundColor = "#eeeeee";
+		selectionMinButton.style.backgroundColor = "#eeeeee";
 	}
 }
 function selectSelection(){
 	if(!isPlaying){
 		playBubble = 0;
 		playSelection = 1;
+		playSelectionMin = 0;
 		playInsertion = 0;
-		playMerge = 0;
 		bubbleButton.style.backgroundColor = "#eeeeee";
 		selectionButton.style.backgroundColor = "#9effa6";
 		insertionButton.style.backgroundColor = "#eeeeee";
-		mergeButton.style.backgroundColor = "#eeeeee";
+		selectionMinButton.style.backgroundColor = "#eeeeee";
 	}
 }
 function selectInsertion(){
 	if(!isPlaying){
 		playBubble = 0;
 		playSelection = 0;
+		playSelectionMin = 0;
 		playInsertion = 1;
-		playMerge = 0;
 		bubbleButton.style.backgroundColor = "#eeeeee";
 		selectionButton.style.backgroundColor = "#eeeeee";
 		insertionButton.style.backgroundColor = "#9effa6";
-		mergeButton.style.backgroundColor = "#eeeeee";
+		selectionMinButton.style.backgroundColor = "#eeeeee";
 	}
 }
-function selectMerge(){
+function selectSelectionMin(){
 	if(!isPlaying){
 		playBubble = 0;
 		playSelection = 0;
+		playSelectionMin = 1;
 		playInsertion = 0;
-		playMerge = 1;
 		bubbleButton.style.backgroundColor = "#eeeeee";
 		selectionButton.style.backgroundColor = "#eeeeee";
 		insertionButton.style.backgroundColor = "#eeeeee";
-		mergeButton.style.backgroundColor = "#9effa6";
+		selectionMinButton.style.backgroundColor = "#9effa6";
 	}
 }
 
@@ -126,9 +127,9 @@ function startSort(){
 			const moves=insertionSort([...array]);
 			animateInsertion(moves);
 		}
-		if (playMerge){
-			array=mergeSort([...array]);
-			console.log([...array]);
+		if (playSelectionMin){
+			const moves=selectionMinSort([...array]);
+			animateSelectionMin(moves);
 		}
 	}
 }
@@ -231,6 +232,57 @@ function selectionSort(array){
     return moves;
 }
 
+function animateSelectionMin(moves){
+	isPlaying = 1;
+    if(moves.length==0 || pause){
+        showBars();
+		startSortButton.style.backgroundColor="#eeeeee";
+		startSortButton.textContent="Начать сортировку";
+		isPlaying=0;
+		pause = 0;
+        return;
+    }
+    const move=moves.shift(0);
+	const [i,j] = move.index;
+	
+	if(move.type=="swap"){
+		[array[i],array[j]]=[array[j],array[i]];
+    }
+	
+	showBars(move);
+	
+    playNote(200+array[i]*500);
+    playNote(200+array[j]*500);
+	
+	setSpeed = document.getElementById("setSpeed").value;
+
+    setTimeout(function(){
+        animateSelection(moves);
+    },300 * sortSpeed / setSpeed);
+}
+
+function selectionMinSort(array){
+    const moves=[];
+	k = 0;
+    do{
+        var swapped=false;
+		let minElement=n-1;
+		for(let i=k;i<n;i++){
+			moves.push({index:[minElement,i], type:"comparison"});
+			if(array[i]<array[minElement]){
+				minElement = i;
+			}
+		}
+		if(minElement!=k){
+			moves.push({index:[minElement,k], type:"swap"});
+			swapped=true;
+			[array[minElement],array[k]]=[array[k],array[minElement]];
+		}
+		k=k+1;
+    }while(k<n);
+    return moves;
+}
+
 function animateInsertion(moves){
 	isPlaying = 1;
     if(moves.length==0 || pause){
@@ -284,26 +336,7 @@ function insertionSort(array){
     return moves;
 }
 
-function merge(left, right) {
-    let arr = []
-	const moves=[]
-    while (left.length && right.length) {
-        if (left[0] < right[0]) {
-            arr.push(left.shift())
-        } else {
-            arr.push(right.shift()) 
-        }
-    }
-    return [ ...arr, ...left, ...right ]
-}
-function mergeSort(array) {
-	const half = array.length / 2
-	if(array.length < 2){
-		return array 
-	}
-	const left = array.splice(0, half)
-	return merge(mergeSort(left),mergeSort(array))
-}
+
 
 
 function showBars(move){
@@ -356,4 +389,3 @@ function playNote(freq){
 		node.connect(audioCtx.destination);
 	}
 }
-
